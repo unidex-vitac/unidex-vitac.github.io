@@ -1,0 +1,9 @@
+title: "UniDex-ViTac: Learning Unified Visuo-Tactile Dexterous Manipulation Policy from Human Video Data"
+description: "ICRA 2026 Workshop Submission"
+baseurl: ""
+url: ""
+
+markdown: kramdown
+theme: null
+plugins:
+  - jekyll-feed

@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro');
+
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.publication-title,
+.title,
+h1, h2, h3, h4 {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.footer .icon-link {
+  font-size: 25px;
+  color: #000;
+}
+
+.link-block a {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.teaser .hero-body {
+  padding-top: 0;
+  padding-bottom: 3rem;
+}
+
+.teaser {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.publication-title {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.publication-authors {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+#sim-video-tabs li.is-active a {
+  color: #2563eb !important;
+  font-weight: bold;
+}
+
+.video-content {
+  display: none;
+}
+
+.video-content.is-active {
+  display: block;
+}
