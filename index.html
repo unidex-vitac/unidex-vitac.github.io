@@ -57,16 +57,16 @@
           <div class="column has-text-centered">
             <div class="publication-links">
               <span class="link-block">
-                <a href="static/unidex_vitac.pdf" target="_blank"
-                   class="external-link button is-normal is-rounded is-dark">
+                <a href="static/pdf/UniDex-ViTac_ICRA_2026_Workshop.pdf" target="_blank"
+                   class="external-link button is-normal is-rounded" style="background:#2563eb;color:white;border:none;box-shadow:0 4px 10px rgba(37,99,235,0.4);transition:all 0.2s;" onmouseover="this.style.background='#1d4ed8';this.style.boxShadow='0 6px 14px rgba(37,99,235,0.5)'" onmouseout="this.style.background='#2563eb';this.style.boxShadow='0 4px 10px rgba(37,99,235,0.4)'">
                   <span class="icon"><i class="fas fa-file-pdf"></i></span>
                   <span>Paper</span>
                 </a>
               </span>
               <span class="link-block">
-                <a href="#video" class="external-link button is-normal is-rounded is-dark">
+                <a href="#" onclick="event.preventDefault()" class="external-link button is-normal is-rounded" style="background:#93b4f0;color:white;border:none;box-shadow:0 4px 10px rgba(37,99,235,0.2);cursor:not-allowed;">
                   <span class="icon"><i class="fas fa-video"></i></span>
-                  <span>Video</span>
+                  <span>Video (coming soon)</span>
                 </a>
               </span>
             </div>
@@ -229,10 +229,7 @@
         </div>
         <div class="content has-text-justified" style="margin-top: 1rem;">
           <p>
-            We build on <strong>ACT</strong> (Action Chunking with Transformers), replacing its image backbone with a point-cloud encoder.
-            The network is a <strong>CVAE</strong> whose encoder (used only at training time) produces a style latent, and whose policy Transformer consumes four tokens:
-            a <strong>PointNet++</strong>-encoded point-cloud token, a linearly projected proprioceptive token, an MLP-embedded binary contact token, and the CVAE style token.
-            Conditioned on these tokens, the Transformer predicts a <strong>30-step chunk</strong> of task-space actions consisting of the desired wrist pose (with 6D rotation) and wrist-relative fingertip targets, which are converted to joint commands by a DLS arm IK and an analytical hand IK solver.
+            We build on <strong>ACT</strong> (Action Chunking with Transformers), replacing its image backbone with a point-cloud encoder. The architecture follows a <strong>CVAE</strong> design: a CVAE encoder (used only at training time) produces a style latent, while the policy Transformer consumes four tokens &mdash; a <strong>PointNet++</strong>-encoded point-cloud token, a linearly projected proprioceptive token, an MLP-embedded binary contact token, and the CVAE style token. Conditioned on these tokens, the Transformer predicts a <strong>30-step chunk</strong> of task-space actions consisting of the desired wrist pose (with 6D rotation) and wrist-relative fingertip targets, which are converted to joint commands by a DLS arm IK and an analytical hand IK solver.
           </p>
         </div>
 
