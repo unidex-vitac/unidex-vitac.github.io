@@ -46,7 +46,7 @@
           </h1>
 
           <h2 class="title is-4">
-            <span style="color:#444">ICRA 2026 Workshop</span><br>
+            <span style="color:#444">ICRA 2026 Workshop Submission</span><br>
             <em style="color:#2563eb">Beyond Teleoperation: Learning from Diverse Human and Simulation Data</em>
           </h2>
 
@@ -106,10 +106,7 @@
         </div>
         <div class="content has-text-justified" style="margin-top: 1rem;">
           <p>
-            Our pipeline consists of three stages:
-            (1) <strong>HOI reconstruction</strong> from in-the-wild human video data (DexYCB);
-            (2) per-object <strong>Residual RL specialists</strong> trained with PPO and a task-space residual action formulation to adapt coarse MANO-derived references into physically feasible, contact-rich robot motions, bridging the embodiment gap; and
-            (3) <strong>rollout and distillation</strong>, where 10,000 successful specialist trajectories are collected and distilled into a single ACT-based multi-task <strong>Visuo-Tactile Generalist</strong> policy.
+            Our pipeline reconstructs HOI trajectories from human videos, trains per-object <strong>Residual RL specialists</strong> to produce physically feasible robot motions, then distills 10,000 successful rollouts into a single multi-task <strong>Visuo-Tactile Generalist</strong> policy.
           </p>
         </div>
 
@@ -120,15 +117,11 @@
         </div>
         <div class="content has-text-justified" style="margin-top: 1rem;">
           <p>
-            The policy observation fuses three complementary signals:
-            a <strong>point cloud</strong> $\mathbf{P}_t \in \mathbb{R}^{512 \times 6}$ (508 FPS-sampled camera points plus 4 fingertip points from forward kinematics),
-            a 42-D <strong>proprioceptive state</strong> (hand/arm joints, wrist pose, fingertip positions),
-            and a 4-D <strong>binary fingertip contact state</strong>.
-            Each point carries a 3-D one-hot label encoding its semantic type:
-            <span style="color:#c0392b"><strong>(1,0,0)</strong></span> for camera points,
-            <span style="color:#27ae60"><strong>(0,1,0)</strong></span> for non-contacting fingertips, and
-            <span style="color:#2980b9"><strong>(0,0,1)</strong></span> for contacting fingertips.
-            This <strong>dual representation</strong> &mdash; embedding contact locally in the point cloud while simultaneously providing a global contact token &mdash; gives the Transformer a structured way to reason jointly over scene geometry and local contact events.
+            Each point in the 512-point cloud carries a one-hot label:
+            <span style="color:#c0392b"><strong>(1,0,0)</strong></span> camera points,
+            <span style="color:#27ae60"><strong>(0,1,0)</strong></span> non-contacting fingertips,
+            <span style="color:#2980b9"><strong>(0,0,1)</strong></span> contacting fingertips.
+            This is combined with a 42-D proprioceptive state and a 4-D binary contact signal, enabling the policy to jointly reason over scene geometry and local contact events.
           </p>
         </div>
 
@@ -229,7 +222,7 @@
         </div>
         <div class="content has-text-justified" style="margin-top: 1rem;">
           <p>
-            We build on <strong>ACT</strong> (Action Chunking with Transformers), replacing its image backbone with a point-cloud encoder. The architecture follows a <strong>CVAE</strong> design: a CVAE encoder (used only at training time) produces a style latent, while the policy Transformer consumes four tokens &mdash; a <strong>PointNet++</strong>-encoded point-cloud token, a linearly projected proprioceptive token, an MLP-embedded binary contact token, and the CVAE style token. Conditioned on these tokens, the Transformer predicts a <strong>30-step chunk</strong> of task-space actions consisting of the desired wrist pose (with 6D rotation) and wrist-relative fingertip targets, which are converted to joint commands by a DLS arm IK and an analytical hand IK solver.
+            Built on <strong>ACT</strong> with a <strong>CVAE</strong> encoder, the policy Transformer takes four tokens &mdash; point cloud (<strong>PointNet++</strong>), proprioception, binary contact, and a style latent &mdash; and predicts a <strong>30-step action chunk</strong> of wrist pose and fingertip targets, executed via DLS arm IK and analytical hand IK.
           </p>
         </div>
 
@@ -249,16 +242,9 @@
     </div>
     <div class="content has-text-justified" style="margin-top: 1rem;">
       <p>
-        We evaluate on <strong>10 YCB objects</strong> against three state-based baselines (ACT, Diffusion Policy, BC-Transformer) and conduct ablations on the input modalities and the contact&ndash;point-cloud fusion strategy.
-      </p>
-      <p>
-        <strong>(a) Sensory vs. Explicit State:</strong> Our visuo-tactile policy achieves a <strong>68.3%</strong> average success rate, substantially outperforming ACT (53.4%), Diffusion Policy (45.2%), and BC-Transformer (20.2%). The gap is especially large on small cylindrical objects (e.g., <code>master_chef_can</code>, <code>tomato_soup_can</code>), where explicit state representations struggle to infer local geometry.
-      </p>
-      <p>
-        <strong>(b) Input Modality Ablation:</strong> Using only a binary contact signal (<em>Contact Only</em>) reaches 58.4%, while using only a point cloud (<em>PCD Only</em>) reaches 55.5%. The two modalities are highly complementary &mdash; fusing them pushes the overall success to <strong>68.3%</strong> and resolves object-specific failure modes.
-      </p>
-      <p>
-        <strong>(c) Fusion Strategy:</strong> Partial fusions (<em>token only</em> or <em>onehot only</em>) yield modest gains. Our <strong>dual representation</strong> that <em>simultaneously</em> encodes contact locally in the point-cloud labels and globally as a contact token consistently performs best across all 10 objects.
+        <strong>(a)</strong> Our visuo-tactile policy achieves <strong>68.3%</strong> average success on 10 YCB objects, outperforming ACT (53.4%), Diffusion Policy (45.2%), and BC-Transformer (20.2%).
+        <strong>(b)</strong> Point cloud and binary contact are complementary &mdash; fusing both outperforms either alone (PCD Only: 55.5%, Contact Only: 58.4%).
+        <strong>(c)</strong> Our dual fusion (onehot label + contact token) consistently performs best across all objects.
       </p>
     </div>
 
@@ -445,7 +431,7 @@
 
     <div class="content has-text-justified" style="margin-top: 1rem;">
       <p>
-        We deploy our visuo-tactile policy on a <strong>Franka Emika Panda</strong> arm equipped with a <strong>16-DoF dexterous hand</strong> and evaluate it on both <strong>seen</strong> objects (included in simulation training) and <strong>unseen</strong> objects (novel geometries and materials). We compare our full <strong>Point Cloud + Binary Tactile</strong> policy against a <strong>Point Cloud Only</strong> baseline, each over <strong>10 trials per object</strong>. Tactile feedback yields a clear improvement on small or heavily occluded objects (e.g., <code>potted_meat_can</code>, <code>pudding_box</code>), lifting the overall average from <strong>54.5%</strong> to <strong>66.4%</strong>.
+        Deployed on a <strong>Franka Emika Panda</strong> with a <strong>16-DoF dexterous hand</strong>, our <strong>PC + Tactile</strong> policy achieves <strong>66.4%</strong> overall success across seen and unseen objects, outperforming the <strong>PC Only</strong> baseline (54.5%).
       </p>
     </div>
 
