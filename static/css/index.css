@@ -53,3 +53,16 @@ h1, h2, h3, h4 {
 .video-content.is-active {
   display: block;
 }
+
+.supplementary-video-player {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #141820;
+  border-radius: 8px;
+}
+
+.supplementary-video-description {
+  margin-top: 1rem;
+}

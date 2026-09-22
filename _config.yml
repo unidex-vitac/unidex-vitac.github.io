@@ -7,3 +7,8 @@ markdown: kramdown
 theme: null
 plugins:
   - jekyll-feed
+
+# The current homepage is index.html; older drafts must not replace its output.
+exclude:
+  - index.md
+  - index.md.bak
